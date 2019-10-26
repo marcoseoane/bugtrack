@@ -16,33 +16,33 @@ app.get("/", function(request, response) {
 
 app.get("/slack_auth", (req, res)=>{
   console.log(process.env.CLIENT_ID)
-  res.redirect(`https://slack.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=channels:read%20chat:write:bot&redirect_uri=https://time-waterlily.glitch.me/slack_callback`);
+  res.redirect(`https://slack.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=bot%20channels:read%20chat:write:bot&redirect_uri=https://time-waterlily.glitch.me/slack_callback`);
 });
 
 app.get("/slack_callback", (req, res)=>{
-  console.log(req.query)
-  axios.post('https://slack.com/api/oauth.access', qs({
+  axios.post('https://slack.com/api/oauth.access', qs.stringify({
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
     code: req.query.code
-  }), {headers: {
-    'Content-Type': 'application/x-www-form-urlencoded'
-  }})
+  }), {
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded'
+    }
+  })
   .then(function (response) {
     console.log(response.data);
+    res.end('');
   })
   .catch(function (error) {
     console.log(error);
+    res.end('error');
   });
-  res.end('');
 });
 
 app.post('/slack_challenge', (req,res)=>{
-  console.log(req.body)
-  res.end(req.body.challenge)
+  res.end(req.body.challenge);
 });
 
-// listen for requests :)
 const listener = app.listen(process.env.PORT, function() {
   console.log("Your app is listening on port " + listener.address().port);
 });
