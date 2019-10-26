@@ -1,22 +1,14 @@
-// server.js
-// where your node app starts
-
-// init project
 const express = require("express");
 const bodyParser = require('body-parser');
+const axios = require('axios');
 const app = express();
 
-// we've started you off with Express,
-// but feel free to use whatever libs or frameworks you'd like through `package.json`.
-
-// http://expressjs.com/en/starter/static-files.html
 app.use(express.static("public"));
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
 
-// http://expressjs.com/en/starter/basic-routing.html
 app.get("/", function(request, response) {
   response.sendFile(__dirname + "/views/index.html");
 });
@@ -28,7 +20,17 @@ app.get("/slack_auth", (req, res)=>{
 
 app.get("/slack_callback", (req, res)=>{
   console.log(req.query)
-  res.end()
+  axios.post('https://slack.com/api/oauth.access', {
+    client_id: process.env.CLIENT_ID,
+    client_secret: process.env.CLIENT_SECRET
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+  res.end('');
 });
 
 app.post('/slack_challenge', (req,res)=>{
