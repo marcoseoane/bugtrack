@@ -10,11 +10,13 @@ const slackSigningSecret = process.env.SIGNING_SECRET;
 const slackEvents = createEventAdapter(slackSigningSecret);
 
 const app = express();
-const uri = process.env.MONGO_URI;
+const uri = 'mongodb+srv://admin:h56lop%2119@cluster0-vucd7.mongodb.net/test?retryWrites=true&w=majority'
 const client = new MongoClient(uri, { useNewUrlParser: true });
 
 client.connect(err => {
+  if(err) throw err;
   const collection = client.db("test").collection("devices");
+  
   app.use(express.static("public"));
 
   app.use('/slack_event', slackEvents.expressMiddleware());
