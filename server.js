@@ -71,7 +71,7 @@ app.get("/slack_callback", (req, res)=>{
       bot_token: bot.bot_access_token
     };
     console.log(newUser)
-    db.collection('users').find().toArray((arr)=>console.log(arr))
+    db.collection('users').insertOne(newUser);
     res.end('');
   })
   .catch(function (error) {
