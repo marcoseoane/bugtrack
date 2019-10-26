@@ -8,7 +8,7 @@ self.addEventListener('error', (event)=>{
       },
       body: JSON.stringify({
         stack: event.error.stack,
-        prick: 'fuck'
+        bugBotId: ''
       })
     }).then(async res => {
       if(res.ok){
