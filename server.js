@@ -10,7 +10,7 @@ const app = express();
 
 app.use(express.static("public"));
 
-app.use('/slack_event',  slackEvents.expressMiddleware());
+app.use('/slack_event', slackEvents.expressMiddleware());
 
 app.use(bodyParser.urlencoded({
   extended: true
@@ -20,7 +20,6 @@ app.use(bodyParser.json());
 slackEvents.on('message', (event) => {
   console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
 });
-
 
 app.get("/", function(request, response) {
   response.sendFile(__dirname + "/views/index.html");

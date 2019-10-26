@@ -1,7 +1,12 @@
-(function(send) {
-    XMLHttpRequest.prototype.send = function(body) {
-        var info="send data\r\n"+body;
-        alert(info);
-        send.call(this, body);
+(function() {
+    var origOpen = XMLHttpRequest.prototype.open;
+    XMLHttpRequest.prototype.open = function() {
+        console.log('request started!');
+        this.addEventListener('load', function() {
+            console.log('request completed!');
+            console.log(this.readyState); //will always be 4 (ajax is completed successfully)
+            console.log(this.responseText); //whatever the response was
+        });
+        origOpen.apply(this, arguments);
     };
-})(XMLHttpRequest.prototype.send);
+})();
