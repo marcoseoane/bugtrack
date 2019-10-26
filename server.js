@@ -1,9 +1,7 @@
 const express = require("express");
 const bodyParser = require('body-parser');
 const qs = require('querystring');
-
 const MongoClient = require('mongodb').MongoClient;
-
 const axios = require('axios');
 const { createEventAdapter } = require('@slack/events-api');
 const slackSigningSecret = process.env.SIGNING_SECRET;
@@ -22,9 +20,7 @@ client.connect(err => {
 });
 
 app.use(express.static("public"));
-
 app.use('/slack_event', slackEvents.expressMiddleware());
-
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -75,10 +71,7 @@ app.get("/slack_callback", (req, res)=>{
       bot_token: bot.bot_access_token
     };
     console.log(newUser)
-    db.collection('users').findOne({user_id: user_id}).then(user => {
-      console.log(user);
-    });
-    
+    db.collection('users').find().toArray((arr)=>console.log(arr))
     res.end('');
   })
   .catch(function (error) {
