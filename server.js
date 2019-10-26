@@ -11,9 +11,9 @@ const slackEvents = createEventAdapter(slackSigningSecret);
 
 const app = express();
 const uri = 'mongodb+srv://admin:root@cluster0-vucd7.mongodb.net/test?retryWrites=true&w=majority'
-const client = new MongoClient(uri, { useNewUrlParser: true });
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-let db;
+var db;
 
 client.connect(err => {
   if(err) throw err;
@@ -63,7 +63,7 @@ app.get("/slack_callback", (req, res)=>{
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
-  .then(async function (response) {
+  .then(function (response) {
     const { access_token, user_id, team_id, enterprise_id, team_name, bot } = response.data;
     const newUser = {
       slack_token: access_token,
@@ -72,12 +72,12 @@ app.get("/slack_callback", (req, res)=>{
       enterprise_id,
       team_name,
       bot_user_id: bot.bot_user_id,
-      bot_token: bot.access_token
+      bot_token: bot.bot_access_token
     };
-    
-    const existingUser = await db.collection('users').findOne({user_id: user_id});
-    
-    console.log(existingUser)
+    console.log(newUser)
+    db.collection('users').findOne({user_id: user_id}).then(user => {
+      console.log(user);
+    });
     
     res.end('');
   })
