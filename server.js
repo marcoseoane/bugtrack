@@ -9,7 +9,9 @@ const slackEvents = createEventAdapter(slackSigningSecret);
 const app = express();
 
 app.use(express.static("public"));
-app.use('/slack_event',  slackEvents.requestListener());
+
+app.use('/slack_event',  slackEvents.expressMiddleware());
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));
@@ -56,8 +58,3 @@ app.post('/slack_event', (req,res)=>{
 const listener = app.listen(process.env.PORT, function() {
   console.log("Your app is listening on port " + listener.address().port);
 });
-
-// (async () => {
-//   const server = slackEvents.start(process.env.PORT+1);
-  
-// })();
