@@ -21,6 +21,11 @@ slackEvents.on('message', (event) => {
   console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
 });
 
+app.post("/relay_bug", (req, res) => {
+  console.log(req.body)
+  res.end('')
+});
+
 app.get("/", function(request, response) {
   response.sendFile(__dirname + "/views/index.html");
 });
@@ -39,7 +44,8 @@ app.get("/slack_callback", (req, res)=>{
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
     code: req.query.code
-  }), {
+  }), 
+  {
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded'
     }
