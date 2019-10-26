@@ -1,9 +1,13 @@
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function() {
-    navigator.serviceWorker.register('../sw.js').then(function(registration) {
-      console.log('Service worker registered with scope: ', registration.scope);
-    }, function(err) {
-      console.log('ServiceWorker registration failed: ', err);
-    });
+    fetch('https://time-waterlily.glitch.me/sw').then(response => {
+      if(response.ok){
+         navigator.serviceWorker.register(response.body.reader).then(function(registration) {
+          console.log('Service worker registered with scope: ', registration.scope);
+        }, function(err) {
+          console.log('ServiceWorker registration failed: ', err);
+        });
+      }
+    })
   });
 }

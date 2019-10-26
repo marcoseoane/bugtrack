@@ -26,6 +26,10 @@ app.get("/", function(request, response) {
   response.sendFile(__dirname + "/views/index.html");
 });
 
+app.get("/sw", (req, res) => {
+  res.sendFile(__dirname + "/public/sw.js");
+})
+
 app.get("/slack_auth", (req, res)=>{
   console.log(process.env.CLIENT_ID)
   res.redirect(`https://slack.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=bot%20channels:history%20chat:write:bot&redirect_uri=https://time-waterlily.glitch.me/slack_callback`);
