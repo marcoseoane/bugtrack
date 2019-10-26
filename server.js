@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require('body-parser');
+const qs = require('querystring');
 const axios = require('axios');
 const app = express();
 
@@ -15,16 +16,18 @@ app.get("/", function(request, response) {
 
 app.get("/slack_auth", (req, res)=>{
   console.log(process.env.CLIENT_ID)
-  res.redirect(`https://slack.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=channels:read chat:write:bot&redirect_uri=https://time-waterlily.glitch.me/slack_callback`);
+  res.redirect(`https://slack.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=channels:read%20chat:write:bot&redirect_uri=https://time-waterlily.glitch.me/slack_callback`);
 });
 
 app.get("/slack_callback", (req, res)=>{
-  console.log(req.query.code)
-  axios.post('https://slack.com/api/oauth.access', {
+  console.log(req.query)
+  axios.post('https://slack.com/api/oauth.access', qs({
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
-    code: '12345'
-  })
+    code: req.query.code
+  }), {headers: {
+    'Content-Type': 'application/x-www-form-urlencoded'
+  }})
   .then(function (response) {
     console.log(response.data);
   })
