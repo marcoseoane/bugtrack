@@ -1,5 +1,4 @@
-self.addEventListener('fetch', function(event) {
-  event.respondWith(
-    fetch(event.request)
-  );
+self.addEventListener('error', (event)=>{
+  console.log(event.error.stack);
 });
+
