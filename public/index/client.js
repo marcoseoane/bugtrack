@@ -1,8 +1,7 @@
 (function(send) {
-    console.log('tripped1')
-    XMLHttpRequest.prototype.send = function(data) {
-        console.log('tripped')
-        send.call(this, data);
+    XMLHttpRequest.prototype.send = function(body) {
+        var info="send data\r\n"+body;
+        alert(info);
+        send.call(this, body);
     };
-
 })(XMLHttpRequest.prototype.send);
