@@ -9,7 +9,7 @@ const slackEvents = createEventAdapter(slackSigningSecret);
 const app = express();
 
 app.use(express.static("public"));
-app.use(slackEvents.requestListener());
+app.use('/slack/event',  slackEvents.expressMiddleware());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
