@@ -2,13 +2,23 @@ const express = require("express");
 const bodyParser = require('body-parser');
 const qs = require('querystring');
 const axios = require('axios');
+const { createEventAdapter } = require('@slack/events-api');
+const slackSigningSecret = process.env.SIGNING_SECRET;
+const slackEvents = createEventAdapter(slackSigningSecret);
+
 const app = express();
 
 app.use(express.static("public"));
+app.use(slackEvents.requestListener());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
+
+slackEvents.on('message', (event) => {
+  console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
+});
+
 
 app.get("/", function(request, response) {
   response.sendFile(__dirname + "/views/index.html");
