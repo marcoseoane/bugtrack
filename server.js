@@ -8,15 +8,15 @@ const slackSigningSecret = process.env.SIGNING_SECRET;
 const slackEvents = createEventAdapter(slackSigningSecret);
 
 const app = express();
-const uri = 'mongodb+srv://admin:root@cluster0-vucd7.mongodb.net/test?retryWrites=true&w=majority'
+const uri = process.env.MONGO_URI
+console.log(uri)
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 var db;
 
 client.connect(err => {
   if(err) throw err;
-  db = client.db('bugtrack')
-  client.close();
+  db = client.db('bugtrack');
 });
 
 app.use(express.static("public"));
@@ -27,11 +27,13 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 slackEvents.on('message', (event) => {
+  // check for message bot's user name to set ID of channel to relay stack traces to.
   console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
 });
 
 app.post("/relay_bug", (req, res) => {
   console.log(req.body);
+  // relay message to correct channel
   res.end('');
 });
 
@@ -70,9 +72,16 @@ app.get("/slack_callback", (req, res)=>{
       bot_user_id: bot.bot_user_id,
       bot_token: bot.bot_access_token
     };
-    console.log(newUser)
-    db.collection('users').insertOne(newUser);
-    res.end('');
+    
+    db.collection('users').findOne({user_id: user_id}, (err, user)=>{
+      if(err) throw err;
+      if(user){
+        res.end('already integrated');
+      } else {
+        db.collection('users').insertOne(newUser);
+        res.end('integration successful, thank you for installing');
+      }
+    });
   })
   .catch(function (error) {
     console.log(error);
@@ -87,6 +96,5 @@ app.post('/slack_event', (req,res)=>{
 const listener = app.listen(process.env.PORT, function() {
   console.log("Your app is listening on port " + listener.address().port);
 });
-
 
 
