@@ -23,13 +23,18 @@ app.get("/", function(request, response) {
 
 app.get("/slack_auth", (req, res)=>{
   console.log(process.env.CLIENT_ID)
-  res.redirect(`https://slack.com/oauth/authorize?client_id='${process.env.CLIENT_ID}'&scope="channels:read chat:write:bot"`)
-})
+  res.redirect(`https://slack.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=channels:read chat:write:bot&redirect_uri=https://time-waterlily.glitch.me/slack_callback`);
+});
 
-app.post('/slack', (req,res)=>{
+app.get("/slack_callback", (req, res)=>{
+  console.log(req.query)
+  res.end()
+});
+
+app.post('/slack_challenge', (req,res)=>{
   console.log(req.body)
   res.end(req.body.challenge)
-})
+});
 
 // listen for requests :)
 const listener = app.listen(process.env.PORT, function() {
