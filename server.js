@@ -10,13 +10,13 @@ const slackSigningSecret = process.env.SIGNING_SECRET;
 const slackEvents = createEventAdapter(slackSigningSecret);
 
 const app = express();
-const uri = 'mongodb+srv://admin:h56lop%2119@cluster0-vucd7.mongodb.net/test?retryWrites=true&w=majority'
-const client = new MongoClient(uri, { useNewUrlParser: true });
+const uri = 'mongodb+srv://admin:root@cluster0-vucd7.mongodb.net/test?retryWrites=true&w=majority'
+const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 client.connect(err => {
   if(err) throw err;
-  const collection = client.db("test").collection("devices");
-  
+  const usersCollection = client.db("bugstack").collection("users");
+  console.log('cool')
   app.use(express.static("public"));
 
   app.use('/slack_event', slackEvents.expressMiddleware());
@@ -72,11 +72,11 @@ client.connect(err => {
   app.post('/slack_event', (req,res)=>{
     res.end(req.body.challenge);
   });
-
-  const listener = app.listen(process.env.PORT, function() {
-    console.log("Your app is listening on port " + listener.address().port);
-  });
-
   client.close();
 });
+
+const listener = app.listen(process.env.PORT, function() {
+  console.log("Your app is listening on port " + listener.address().port);
+});
+
 
