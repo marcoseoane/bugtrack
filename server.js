@@ -21,9 +21,14 @@ app.get("/", function(request, response) {
   response.sendFile(__dirname + "/views/index.html");
 });
 
+app.get("/slack_auth", (req, res)=>{
+  console.log(process.env.CLIENT_ID)
+  res.redirect(`https://slack.com/oauth/authorize?client_id='${process.env.CLIENT_ID}'&scope="channels:read chat:write:bot"`)
+})
+
 app.post('/slack', (req,res)=>{
-  console.log(req)
-  res.end()
+  console.log(req.body)
+  res.end(req.body.challenge)
 })
 
 // listen for requests :)
