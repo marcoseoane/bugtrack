@@ -9,7 +9,6 @@ const slackEvents = createEventAdapter(slackSigningSecret);
 
 const app = express();
 const uri = process.env.MONGO_URI
-console.log(uri)
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 var db;
@@ -33,7 +32,7 @@ slackEvents.on('message', (event) => {
 
 app.post("/relay_bug", (req, res) => {
   console.log(req.body);
-  // relay message to correct channel
+  // relay message to correct channel.
   res.end('');
 });
 
@@ -73,14 +72,14 @@ app.get("/slack_callback", (req, res)=>{
       bot_token: bot.bot_access_token
     };
     
-    db.collection('users').findOne({user_id: user_id}, (err, user)=>{
+    db.collection('users').findOne({user_id: user_id}, (err, user) => {
       if(err) throw err;
       if(user){
         res.end('already integrated');
       } else {
         db.collection('users').insertOne(newUser);
         res.end('integration successful, thank you for installing');
-      }
+      };
     });
   })
   .catch(function (error) {
