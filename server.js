@@ -19,13 +19,14 @@ app.get("/slack_auth", (req, res)=>{
 });
 
 app.get("/slack_callback", (req, res)=>{
-  console.log(req.query)
+  console.log(req.query.code)
   axios.post('https://slack.com/api/oauth.access', {
     client_id: process.env.CLIENT_ID,
-    client_secret: process.env.CLIENT_SECRET
+    client_secret: process.env.CLIENT_SECRET,
+    code: '12345'
   })
   .then(function (response) {
-    console.log(response);
+    console.log(response.data);
   })
   .catch(function (error) {
     console.log(error);
