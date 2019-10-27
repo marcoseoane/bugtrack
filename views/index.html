@@ -10,7 +10,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>BugTrack</title>
+    <title>bugtrack.</title>
     <meta name="description" content="Slack-Bot">
     <link id="favicon" rel="icon" href="https://glitch.com/edit/favicon-app.ico" type="image/x-icon">
     <meta charset="utf-8">
@@ -21,14 +21,14 @@
     <link rel="stylesheet" href="/index/style.css">
   </head>
   <body>
-    <header>
+    <div id="header-container">
       <img id="bugtrack-logo" src="https://cdn.glitch.com/e9de5fe1-ce70-4b91-9d39-3dfcd1c90559%2FBugs-PNG-Photos.png?v=1572208080360"></img>
-      <h1>BugTrack</h1>
-      <button>
+      <h1>bugtrack.</h1>
+      <button id="install-btn" onclick="window.redirect('/slack_auth')">
         <img id="slack-logo" src="https://cdn.glitch.com/e9de5fe1-ce70-4b91-9d39-3dfcd1c90559%2F5cb480cd5f1b6d3fbadece79.png?v=1572208535012"></img>
         <span>Install</span>
       </button>
-    </header>
+    </div>
 
     <main>
       
@@ -43,7 +43,7 @@
           to make it easier for folks to view source and remix -->
     <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
     
-    <script src="/index/client.js" defer></script>
+    <script src="/index/index.js" defer></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script async defer src="https://buttons.github.io/buttons.js"></script>
     <script src="https://bugtrack.glitch.me/relay.js?botId=123&channelId=456" defer></script>
