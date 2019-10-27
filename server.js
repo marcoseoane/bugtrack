@@ -11,7 +11,7 @@ const app = express();
 const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const { userMentionedBot } = require('./utils.js');
+const { userMentionedBot, userRegEx } = require('./utils.js');
 
 var db;
 
@@ -29,11 +29,14 @@ app.use(bodyParser.json());
 
 slackEvents.on('message', (event) => {
   // check for message bot's user name to set ID of channel to relay stack traces to.
-  db.collection('users').findOne({team_id: event.team}, (err, user)=>{
-    if (err) throw (err);
-    console.log(userMentionedBot(event.text, user.bot_user_id));
-  })
-  console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
+  if(userRegEx.test(event.text)){
+    const msgText = event.text.replace(userRegEx, '').toLowerCase();
+    if(msgText.includes('relay'))
+      db.collection('users').findOne({team_id: event.team}, (err, user)=>{
+        if (err) throw (err);
+        console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
+      });
+  }
 });
 
 app.post("/relay_bug", (req, res) => {
