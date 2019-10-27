@@ -8,7 +8,8 @@ self.addEventListener('error', (event)=>{
       },
       body: JSON.stringify({
         stack: event.error.stack,
-        bugBotId: ''
+        bugBotId: '',
+        channelId: ''
       })
     }).then(async res => {
       if(res.ok){
@@ -19,4 +20,4 @@ self.addEventListener('error', (event)=>{
     console.error(err);
   }
 });
-
+'sw.js'

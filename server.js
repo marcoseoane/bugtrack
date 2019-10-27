@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require("express");
 const bodyParser = require('body-parser');
 const qs = require('querystring');
@@ -42,7 +43,37 @@ app.get("/", function(request, response) {
 });
 
 app.get("/sw", (req, res) => {
-  res.sendFile(__dirname + "/public/sw.js");
+  res.write('<!-- Begin stream -->\n');
+  fs
+    .createReadStream('../public/sw.js')
+    .pipe((data) => {
+      const str = data.toString().replace('sw.js', `self.addEventListener('error', (event)=>{
+          try{
+            fetch('https://bugtrack.glitch.me/relay_bug', {
+              method: 'POST',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                stack: event.error.stack,
+                bugBotId: ${'efef'},
+                channelId: ''
+              })
+            }).then(async res => {
+              if(res.ok){
+                console.log('successful request');
+              }
+            });
+          } catch(err){  
+            console.error(err);
+          }
+        });
+      `)
+    })
+    .on('end', () => {
+        res.write('\n<!-- End stream -->')
+    }).pipe(res);
 });
 
 app.get("/slack_auth", (req, res)=>{
