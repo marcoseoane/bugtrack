@@ -8,6 +8,10 @@ module.exports.setRelayChannel = (event, db) => {
         if (err) throw (err);
         // check for message with bot's user name to set ID of channel to relay stack traces to.
         if (this.userMentionedBot(event.text, user.bot_user_id))
+          db.collection('users').updateOne({ user_id: user.id }, { $set: { relay_channel: event.channel } }, (err, res) => {
+            
+          });
+        
           console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
       });
   };
