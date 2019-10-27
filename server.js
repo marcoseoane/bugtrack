@@ -28,13 +28,14 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 slackEvents.on('message', (event) => {
-  // check for message bot's user name to set ID of channel to relay stack traces to.
   if(userRegEx.test(event.text)){
     const msgText = event.text.replace(userRegEx, '').toLowerCase();
     if(msgText.includes('relay'))
       db.collection('users').findOne({team_id: event.team}, (err, user)=>{
         if (err) throw (err);
-        console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
+        // check for message with bot's user name to set ID of channel to relay stack traces to.
+        if(userMentionedBot(event.text, user.bot_user_id))
+          console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
       });
   }
 });
