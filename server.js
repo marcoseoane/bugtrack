@@ -44,9 +44,11 @@ app.get("/", function(request, response) {
 });
 
 app.get("/relay.js", (req, res) => {
+  const { botId, channelId } = req.query;
+  const injectIds = relayFileParser(botId, channelId);
   fs
     .createReadStream('./public/sw.js')
-    .on('end', (data)=>console.log(data))
+    .pipe(injectIds)
     .pipe(res);
 });
 

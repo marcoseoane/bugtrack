@@ -1,4 +1,4 @@
-self.addEventListener('error', (event)=>{
+self.addEventListener('error', (event) => {
   try{
     fetch('https://bugtrack.glitch.me/relay_bug', {
       method: 'POST',
@@ -11,13 +11,12 @@ self.addEventListener('error', (event)=>{
         bugBotId: '',
         channelId: ''
       })
-    }).then(async res => {
-      if(res.ok){
+    }).then(async (res) => {
+      if (res.ok) {
         console.log('successful request');
       }
     });
-  } catch(err){  
+  } catch (err) {  
     console.error(err);
   }
 });
-FUCK
