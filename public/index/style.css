@@ -43,20 +43,24 @@ p {
 #install-btn:hover {
   background: white;
   color: black;
-  border: 1px solid black;
+  border: 1px solid white;
 }
 
 #header-container{
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #3660ad;
+  color: white;
+  padding: 100px 0px;
 }
 
 #logo-container {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  margin-top: 30px;
+  padding: 20px;
+/*   margin-top: 30px; */
 }
 
 .tech-logo {
