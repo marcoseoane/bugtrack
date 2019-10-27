@@ -28,7 +28,7 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 slackEvents.on('message', (event) => {
-  setRelayChannel(event.text, db);
+  setRelayChannel(event, db);
 });
 
 app.post("/relay_bug", (req, res) => {
