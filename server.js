@@ -70,7 +70,8 @@ app.get("/slack_callback", (req, res)=>{
       enterprise_id,
       team_name,
       bot_user_id: bot.bot_user_id,
-      bot_token: bot.bot_access_token
+      bot_token: bot.bot_access_token,
+      relay_channel: null
     };
     
     db.collection('users').findOne({user_id: user_id}, (err, user) => {
