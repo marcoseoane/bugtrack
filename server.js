@@ -1,4 +1,13 @@
 const fs = require('fs');
+const Transform = require('stream').Transform;
+const parser = new Transform();
+parser._transform = function(data, encoding, done) {
+  const str = data.toString().replace("FUCK", '(console.log("fuck"))()');
+  console.log(str)
+  this.push(str);
+  done();
+};
+
 const express = require("express");
 const bodyParser = require('body-parser');
 const qs = require('querystring');
@@ -45,32 +54,8 @@ app.get("/", function(request, response) {
 app.get("/sw", (req, res) => {
   res.write('<!-- Begin stream -->\n');
   fs
-    .createReadStream('../public/sw.js')
-    .pipe((data) => {
-      const str = data.toString().replace('sw.js', `self.addEventListener('error', (event)=>{
-          try{
-            fetch('https://bugtrack.glitch.me/relay_bug', {
-              method: 'POST',
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              body: JSON.stringify({
-                stack: event.error.stack,
-                bugBotId: ${'efef'},
-                channelId: ''
-              })
-            }).then(async res => {
-              if(res.ok){
-                console.log('successful request');
-              }
-            });
-          } catch(err){  
-            console.error(err);
-          }
-        });
-      `)
-    })
+    .createReadStream('./public/sw.js')
+    .pipe(parser)
     .on('end', () => {
         res.write('\n<!-- End stream -->')
     }).pipe(res);

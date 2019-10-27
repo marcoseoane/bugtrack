@@ -20,4 +20,4 @@ self.addEventListener('error', (event)=>{
     console.error(err);
   }
 });
-'sw.js'
+FUCK
