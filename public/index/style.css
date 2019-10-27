@@ -4,6 +4,7 @@
 
 body {
   font-family: helvetica, arial, sans-serif;
+  margin: 0px;
 }
 
 .bold {
@@ -63,7 +64,7 @@ p {
   max-height: 60px;
   -webkit-filter: grayscale(100%); /* Safari 6.0 - 9.0 */
   filter: grayscale(100%);
-  margin: 15px
+  margin: 15px;
 }
 
 .tech-logo:hover {
@@ -97,7 +98,8 @@ li {
 }
 
 footer {
-  margin-top: 50px;
+  margin: 10px;
+  margin-top: 0px;
   padding-top: 5px;
   border-top: 1px solid lightgrey;
 }

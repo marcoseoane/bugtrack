@@ -1,9 +1,0 @@
-{ 
-  ok: true,
-  access_token: 'xoxp-732615700800-721168925394-721176732515-83f6b6d12f7041baeebae734cd788afb',
-  scope: 'identify,bot,channels:read,chat:write:bot',
-  user_id: 'UM74YT7BL',
-  team_id: 'TMJJ3LLPJ',
-  enterprise_id: null,
-  team_name: 'rebo' 
-}
