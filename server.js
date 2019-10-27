@@ -29,7 +29,7 @@ app.use(bodyParser.json());
 
 slackEvents.on('message', (event) => {
   // check for message bot's user name to set ID of channel to relay stack traces to.
-  db.collection('users')
+  console.log(event)
   console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
 });
 
