@@ -50,9 +50,9 @@ p {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: #3660ad;
+  background: #224c98f5;
   color: white;
-  padding: 100px 0px;
+  padding: 130px 0px;
 }
 
 #logo-container {
