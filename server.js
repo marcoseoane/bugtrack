@@ -46,7 +46,7 @@ app.get("/sw", (req, res) => {
 
 app.get("/slack_auth", (req, res)=>{
   console.log(process.env.CLIENT_ID);
-  res.redirect(`https://slack.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=bot%20channels:history%20chat:write:bot&redirect_uri=https://time-waterlily.glitch.me/slack_callback`);
+  res.redirect(`https://slack.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=bot%20channels:history%20chat:write:bot&redirect_uri=https://bugtrack.glitch.me/slack_callback`);
 });
 
 app.get("/slack_callback", (req, res)=>{

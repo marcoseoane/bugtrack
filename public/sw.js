@@ -1,6 +1,6 @@
 self.addEventListener('error', (event)=>{
   try{
-    fetch('https://time-waterlily.glitch.me/relay_bug', {
+    fetch('https://bugtrack.glitch.me/relay_bug', {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
