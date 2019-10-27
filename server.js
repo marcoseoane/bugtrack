@@ -1,13 +1,3 @@
-const fs = require('fs');
-const Transform = require('stream').Transform;
-const parser = new Transform();
-parser._transform = function(data, encoding, done) {
-  const str = data.toString().replace("FUCK", '(console.log("fuck"))()');
-  console.log(str)
-  this.push(str);
-  done();
-};
-
 const express = require("express");
 const bodyParser = require('body-parser');
 const qs = require('querystring');
@@ -22,6 +12,15 @@ const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const { userMentionedBot, userRegEx, setRelayChannel } = require('./utils.js');
+
+const fs = require('fs');
+const Transform = require('stream').Transform;
+const parser = new Transform();
+parser._transform = function(data, encoding, done) {
+  const str = data.toString().replace('FUCK', 'dickhead');
+  this.push(str);
+  done();
+};
 
 var db;
 
@@ -51,8 +50,7 @@ app.get("/", function(request, response) {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-app.get("/sw", (req, res) => {
-  res.write('<!-- Begin stream -->\n');
+app.get("/sw.js", (req, res) => {
   fs
     .createReadStream('./public/sw.js')
     .pipe(parser)
