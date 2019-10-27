@@ -4,7 +4,6 @@
 
 body {
   font-family: helvetica, arial, sans-serif;
-  margin: 2em;
 }
 
 .bold {
@@ -16,8 +15,8 @@ p {
 }
 
 #bugtrack-logo {
-  width: 90px;
-  height: 90px;
+  width: 60px;
+  height: 60px;
 }
 
 #slack-logo {
@@ -31,11 +30,17 @@ p {
   cursor:pointer;
   align-items: center;
   width: 110px;
-  padding: 10px 25px;
+  padding: 10px 27px;
   background: black;
   color: white;
   border-radius: 5px;
   border: none;
+}
+
+#install-btn:hover {
+  background: white;
+  color: black;
+  border: 1px solid black;
 }
 
 #header-container{
@@ -71,6 +76,6 @@ li {
 
 footer {
   margin-top: 50px;
-  padding-top: 25px;
+  padding-top: 5px;
   border-top: 1px solid lightgrey;
 }
