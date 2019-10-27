@@ -33,7 +33,9 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 slackEvents.on('message', (event) => {
-  setRelayChannel(event, db);
+  if (userRegEx.test(event.text)) {
+    setRelayChannel(event, db);
+  }
 });
 
 app.post("/relay_bug", (req, res) => {
@@ -42,7 +44,7 @@ app.post("/relay_bug", (req, res) => {
   res.end('');
 });
 
-app.get("/", function(request, response) {
+app.get("/", (request, response) => {
   response.sendFile(__dirname + "/views/index.html");
 });
 
@@ -54,12 +56,12 @@ app.get("/relay.js", (req, res) => {
     .pipe(res);
 });
 
-app.get("/slack_auth", (req, res)=>{
+app.get("/slack_auth", (req, res) => {
   console.log(process.env.CLIENT_ID);
   res.redirect(`https://slack.com/oauth/authorize?client_id=${process.env.CLIENT_ID}&scope=bot%20channels:history%20chat:write:bot&redirect_uri=https://bugtrack.glitch.me/slack_callback`);
 });
 
-app.get("/slack_callback", (req, res)=>{
+app.get("/slack_callback", (req, res) => {
   axios.post('https://slack.com/api/oauth.access', qs.stringify({
     client_id: process.env.CLIENT_ID,
     client_secret: process.env.CLIENT_SECRET,
@@ -70,7 +72,7 @@ app.get("/slack_callback", (req, res)=>{
       'Content-Type': 'application/x-www-form-urlencoded'
     }
   })
-  .then(function (response) {
+  .then((response) => {
     const { access_token, user_id, team_id, enterprise_id, team_name, bot } = response.data;
     const newUser = {
       slack_token: access_token,
@@ -84,8 +86,8 @@ app.get("/slack_callback", (req, res)=>{
     };
     
     db.collection('users').findOne({user_id: user_id}, (err, user) => {
-      if(err) throw err;
-      if(user){
+      if (err) throw (err);
+      if (user) {
         res.end('already integrated');
       } else {
         db.collection('users').insertOne(newUser);
@@ -93,17 +95,17 @@ app.get("/slack_callback", (req, res)=>{
       };
     });
   })
-  .catch(function (error) {
+  .catch((error) => {
     console.log(error);
     res.end('error');
   });
 });
 
-app.post('/slack_event', (req,res)=>{
+app.post('/slack_event', (req,res) => {
   res.end(req.body.challenge);
 });
 
-const listener = app.listen(process.env.PORT, function() {
+const listener = app.listen(process.env.PORT, () => {
   console.log("Your app is listening on port " + listener.address().port);
 });
 

@@ -3,8 +3,7 @@ const Transform = require('stream').Transform;
 module.exports.userMentionedBot = (msgText, botId) => msgText.includes(botId);
 module.exports.userRegEx = /<@.*> /;
 module.exports.setRelayChannel = (event, db) => {
-  if (this.userRegEx.test(event.text)) {
-    const msgContent = event.text.replace(this.userRegEx, '').toLowerCase();
+  const msgContent = event.text.replace(this.userRegEx, '').toLowerCase();
     if (msgContent.includes('relay'))
       db.collection('users').findOne({ team_id: event.team }, (err, user) => {
         if (err) throw (err);
@@ -15,12 +14,11 @@ module.exports.setRelayChannel = (event, db) => {
             console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
           });
       });
-  };
 };
 module.exports.relayFileParser = (botId, channelId) => {
   const t = new Transform();
   t._transform = function(data, encoding, done) {
-    const str = data.toString().replace("bugBotId: ''", "bugBotId: '"+ botId +"'").replace("channelId: ''", "channelId: '"+ channelId +"'");
+    const str = data.toString().replace("bugBotId: ''", "bugBotId: '" + botId + "'").replace("channelId: ''", "channelId: '" + channelId + "'");
     this.push(str);
     done();
   };
