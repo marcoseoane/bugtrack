@@ -28,6 +28,7 @@ p {
 #install-btn {
   display: flex;
   justify-content: space-between;
+  cursor:pointer;
   align-items: center;
   width: 110px;
   padding: 10px 25px;
