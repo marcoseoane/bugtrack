@@ -11,6 +11,8 @@ const app = express();
 const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
+const { userMentionedBot } = require('./utils.js');
+
 var db;
 
 client.connect(err => {
@@ -27,6 +29,7 @@ app.use(bodyParser.json());
 
 slackEvents.on('message', (event) => {
   // check for message bot's user name to set ID of channel to relay stack traces to.
+  db.collection('users')
   console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
 });
 
