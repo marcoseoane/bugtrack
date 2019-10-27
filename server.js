@@ -46,7 +46,7 @@ app.get("/", function(request, response) {
 app.get("/relay.js", (req, res) => {
   fs
     .createReadStream('./public/sw.js')
-    .pipe(()relayFileParser)
+    .on('end', (data)=>console.log(data))
     .pipe(res);
 });
 

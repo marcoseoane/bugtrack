@@ -1,9 +1,11 @@
 const Transform = require('stream').Transform
-const parser = new Transform();
-parser._transform = function(data, encoding, done, bugBotId, channelId) {
-  const str = data.toString().replace("bugBotId: ''", 'bugBotId: 12345');
-  this.push(str);
-  done();
+const parser = (botId, channelId)=>{
+  new Transform();
+  parser._transform = function(data, encoding, done, bugBotId, channelId) {
+    const str = data.toString().replace("bugBotId: ''", 'bugBotId: 12345');
+    this.push(str);
+    done();
+  }
 };
 
 module.exports.userMentionedBot = (msgText, botId) => msgText.includes(botId);
