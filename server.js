@@ -11,16 +11,9 @@ const app = express();
 const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const { userMentionedBot, userRegEx, setRelayChannel } = require('./utils.js');
+const { userMentionedBot, userRegEx, setRelayChannel, relayFileParser } = require('./utils.js');
 
 const fs = require('fs');
-const Transform = require('stream').Transform;
-const parser = new Transform();
-parser._transform = function(data, encoding, done) {
-  const str = data.toString().replace('FUCK', 'dickhead');
-  this.push(str);
-  done();
-};
 
 var db;
 
@@ -50,13 +43,11 @@ app.get("/", function(request, response) {
   response.sendFile(__dirname + "/views/index.html");
 });
 
-app.get("/sw.js", (req, res) => {
+app.get("/relay.js", (req, res) => {
   fs
     .createReadStream('./public/sw.js')
-    .pipe(parser)
-    .on('end', () => {
-        res.write('\n<!-- End stream -->')
-    }).pipe(res);
+    .pipe(()relayFileParser)
+    .pipe(res);
 });
 
 app.get("/slack_auth", (req, res)=>{

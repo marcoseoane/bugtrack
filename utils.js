@@ -1,5 +1,14 @@
+const Transform = require('stream').Transform
+const parser = new Transform();
+parser._transform = function(data, encoding, done, bugBotId, channelId) {
+  const str = data.toString().replace("bugBotId: ''", 'bugBotId: 12345');
+  this.push(str);
+  done();
+};
+
 module.exports.userMentionedBot = (msgText, botId) => msgText.includes(botId);
 module.exports.userRegEx = /<@.*> /;
+module.exports.relayFileParser = parser;
 module.exports.setRelayChannel = (event, db) => {
   if (this.userRegEx.test(event.text)) {
     const msgContent = event.text.replace(this.userRegEx, '').toLowerCase();
