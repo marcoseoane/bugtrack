@@ -1,19 +1,19 @@
+const fs = require('fs');
 const express = require("express");
 const bodyParser = require('body-parser');
 const qs = require('querystring');
-const MongoClient = require('mongodb').MongoClient;
 const axios = require('axios');
+
 const { createEventAdapter } = require('@slack/events-api');
 const slackSigningSecret = process.env.SIGNING_SECRET;
 const slackEvents = createEventAdapter(slackSigningSecret);
 
 const app = express();
+const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
 const { userMentionedBot, userRegEx, setRelayChannel, relayFileParser } = require('./utils.js');
-
-const fs = require('fs');
 
 var db;
 
@@ -23,10 +23,13 @@ client.connect(err => {
 });
 
 app.use(express.static("public"));
+
 app.use('/slack_event', slackEvents.expressMiddleware());
+
 app.use(bodyParser.urlencoded({
   extended: true
 }));
+
 app.use(bodyParser.json());
 
 slackEvents.on('message', (event) => {
@@ -46,8 +49,7 @@ app.get("/", function(request, response) {
 app.get("/relay.js", (req, res) => {
   const { botId, channelId } = req.query;
   const injectIds = relayFileParser(botId, channelId);
-  fs
-    .createReadStream('./public/sw.js')
+  fs.createReadStream('./public/sw.js')
     .pipe(injectIds)
     .pipe(res);
 });

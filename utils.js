@@ -26,3 +26,4 @@ module.exports.relayFileParser = (botId, channelId) => {
   };
   return t
 };
+module.exports.sendMsgToChannel = () => {}
