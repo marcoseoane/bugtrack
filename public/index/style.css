@@ -108,3 +108,13 @@ footer {
   padding-top: 5px;
   border-top: 1px solid lightgrey;
 }
+
+#script-link {
+  overflow-x: scroll;
+  white-space: nowrap;
+  max-width: 350px;
+  background: white;
+  color: #479049;
+  padding: 10px 15px;
+  border-radius: 10px;
+}
