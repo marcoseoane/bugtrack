@@ -112,9 +112,9 @@ footer {
 #script-link {
   overflow-x: scroll;
   white-space: nowrap;
-  max-width: 350px;
+  max-width: 450px;
   background: white;
   color: #479049;
-  padding: 10px 15px;
+  padding: 10px 20px;
   border-radius: 10px;
 }

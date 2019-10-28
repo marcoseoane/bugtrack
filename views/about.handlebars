@@ -6,8 +6,15 @@
       <span style="color: #5d8bd2;">✔</span>
     </h1>
   </div>
-  <p style="font-weight: lighter; margin: 30px 0px;">
-    How It Works:
+  <p style="font-weight: lighter;">
+    Copy the link below into the root .html file of your project
   </p>
-  <code id="script-link">{{relayScript}}</code>
+  <code 
+    id="script-link" 
+    onclick="
+      navigator.clipboard.writeText({{relayScript}}).then(function() {
+        console.log('Async: Copying to clipboard was successful!');
+      }, function(err) {
+          if(err) throw (err);
+      });">{{relayScript}}</code>
 </div>
