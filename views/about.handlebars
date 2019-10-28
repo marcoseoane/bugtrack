@@ -6,15 +6,24 @@
       <span style="color: #5d8bd2;">✔</span>
     </h1>
   </div>
-  <p style="font-weight: lighter;">
-    Copy the link below into the root .html file of your project
-  </p>
-  <code 
-    id="script-link" 
-    onclick="
-      navigator.clipboard.writeText({{relayScript}}).then(function() {
-        console.log('Async: Copying to clipboard was successful!');
-      }, function(err) {
-          if(err) throw (err);
-      });">{{relayScript}}</code>
+  <div id="instructions">
+    <p style="font-weight: lighter; font-size: 15px;">
+      Copy the script tag below into the root .html file of your project
+    </p>
+    <code 
+      id="script-link" 
+      onclick="copyLink()">{{relayScript}}
+    </code>
+  </div>
 </div>
+
+<script>
+  function copyLink(){
+    const codeTag = document.querySelector('#script-link');
+    navigator.clipboard.writeText(codeTag.innerText).then(function() {
+      console.log('Async: Copying to clipboard was successful!');
+    }, function(err) {
+      if(err) throw (err);
+    });
+  }
+</script>
