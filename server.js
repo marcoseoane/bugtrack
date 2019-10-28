@@ -1,5 +1,6 @@
 const fs = require('fs');
 const express = require("express");
+const hBars  = require('express-handlebars');
 const bodyParser = require('body-parser');
 const qs = require('querystring');
 const axios = require('axios');
@@ -23,6 +24,9 @@ client.connect(err => {
 });
 
 app.use(express.static("public"));
+
+app.engine('handlebars', hBars());
+app.set('view engine', 'handlebars');
 
 app.use('/slack_event', slackEvents.expressMiddleware());
 
