@@ -103,7 +103,7 @@ app.get("/slack_callback", (req, res) => {
       if (err) throw (err);
       if (user) {
         console.log(user)
-        res.render('about', {relayScript: `/relay.js?botId=${user.bot_user_id}&channelId=${user.relay_channel}`})
+        res.render('about', {relayScript: `/relay.js?bugTrackId=${user._id}`})
       } else {
         db.collection('users').insertOne(newUser);
         res.end('integration successful, thank you for installing');
