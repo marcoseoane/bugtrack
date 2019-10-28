@@ -77,7 +77,17 @@ app.get("/slack_callback", (req, res) => {
     }
   })
   .then((response) => {
-    const { access_token, user_id, team_id, enterprise_id, team_name, bot_user_id, bot_token } = response.data;
+    
+    const { 
+      access_token, 
+      user_id, 
+      team_id, 
+      enterprise_id, 
+      team_name, 
+      bot_user_id, 
+      bot_token 
+    } = response.data;
+    
     const newUser = {
       slack_token: access_token,
       user_id,
@@ -93,7 +103,7 @@ app.get("/slack_callback", (req, res) => {
       if (err) throw (err);
       if (user) {
         console.log(user)
-        res.render('about', {relayScript: `https://bugtrack.glitch.me/relay.js?botId=${user.bot_user_id}&channelId=${user.relay_channel}`})
+        res.render('about', {relayScript: `/relay.js?botId=${user.bot_user_id}&channelId=${user.relay_channel}`})
       } else {
         db.collection('users').insertOne(newUser);
         res.end('integration successful, thank you for installing');
