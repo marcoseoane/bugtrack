@@ -14,7 +14,7 @@ const MongoClient = require('mongodb').MongoClient;
 const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const { userMentionedBot, userRegEx, setRelayChannel, relayFileParser } = require('./utils.js');
+const { userMentionedBot, userRegEx, setRelayChannel, relayFileParser, sendMessageToChannel } = require('./utils.js');
 
 var db;
 
@@ -45,7 +45,14 @@ slackEvents.on('message', (event) => {
 app.post("/relay_bug", (req, res) => {
   console.log(req.body);
   // relay message to correct channel.
-  res.end('');
+  db.collection('users').findOne({user_id: req.query.bugTrackId}, (err, user)=>{
+    if(user){
+      console.log(user)
+      res.end('');
+    } else {
+      res.end('no user')
+    }
+  });
 });
 
 app.get("/", (request, response) => {

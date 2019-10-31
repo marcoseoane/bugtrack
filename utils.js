@@ -24,4 +24,20 @@ module.exports.relayFileParser = (botId, channelId) => {
   };
   return t
 };
-module.exports.sendMsgToChannel = () => {}
+module.exports.sendMsgToChannel = ({token, channel, text}) => {
+  fetch('https://slack.com/api/chat.postMessage', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': token
+    },
+    body: JSON.stringify({
+      channel, text
+    })
+  }).then((res)=> {
+    if(res.ok){
+      console.log('workdd')
+      //do something
+    }
+  })
+}
