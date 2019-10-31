@@ -1,5 +1,6 @@
 const Transform = require('stream').Transform;
 const axios = require('axios');
+const qs = require('qs');
 
 module.exports.userMentionedBot = (msgText, botId) => msgText.includes(botId);
 module.exports.userRegEx = /<@.*> /;
@@ -11,15 +12,14 @@ module.exports.setRelayChannel = (event, db) => {
         // check for message with bot's user name to set ID of channel to relay stack traces to.
         if (this.userMentionedBot(event.text, user.bot_user_id))
           db.collection('users').updateOne({ user_id: user.user_id }, { $set: { relay_channel: event.channel } }, (err, res) => {
-            console.log(res);
-            console.log(`Received a message event: user ${event.user} in channel ${event.channel} says ${event.text}`);
+            this.sendMsgToChannel({token: user.slack_token, channel: event.channel, text: 'Relay-Channel successfully connected :)'})
           });
       });
 };
 module.exports.relayFileParser = (bugTrackId) => {
   const t = new Transform();
   t._transform = function(data, encoding, done) {
-    const str = data.toString().replace("bugTrackId: ''", "bugTrackId: '" + bugTrackId+ "'")
+    const str = data.toString().replace("bugTrackId: ''", "bugTrackId: '" + bugTrackId + "'")
     this.push(str);
     done();
   };
@@ -30,19 +30,14 @@ module.exports.sendMsgToChannel = ({token, channel, text}) => {
   return new Promise((resolve, reject) => {
     try{
       axios.post('https://slack.com/api/chat.postMessage',
-        JSON.stringify({channel, text}), 
-        {
-          headers: {
-            'Content-Type': 'application/json;  charset=utf-8',
-            'Authorization': token
-          }
-        }
+        qs.stringify({
+          token: token,
+          channel: channel,
+          text: text
+        })
       )
       .then((res)=> {
-        console.log(res.data)
-        if(res.ok){
-          res.json().then(json => resolve(json));
-        }
+        resolve(res.data);
       })
     } catch (err){
       console.log(err)

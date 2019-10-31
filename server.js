@@ -47,15 +47,15 @@ app.post("/relay_bug", (req, res) => {
   // relay message to correct channel.
   db.collection('users').findOne({ _id: ObjectId(bugTrackId) }, async (err, user)=>{
     if(user){
-      sendMsgToChannel({token: user.slack_token, channel: user.relay_channel, text: 'test'})
+      sendMsgToChannel({token: user.slack_token, channel: user.relay_channel, text: '`'+ stack.replace('\n', '') + '`'})
         .then(slackResponse => {
-          console.log(slackResponse);
+          if(slackResponse.ok){
+                  res.end('relay successful');
+          }
         })
         .catch(err => {
           console.log(err);
         })
-      
-      res.end('relay successful');
     } else {
       res.end('no bugtrack user found');
     }
