@@ -14,9 +14,15 @@ const { MongoClient, ObjectId } = require('mongodb')
 const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const { userMentionedBot, userRegEx, setRelayChannel, relayFileParser, sendMsgToChannel } = require('./utils.js');
+const { 
+  userMentionedBot, 
+  userRegEx, 
+  setRelayChannel, 
+  relayFileParser, 
+  sendMsgToChannel 
+} = require('./utils.js');
 
-var db;
+let db;
 
 client.connect(err => {
   if(err) throw err;
@@ -42,6 +48,18 @@ slackEvents.on('message', (event) => {
   }
 });
 
+app.get("/", (request, response) => {
+  response.sendFile(__dirname + "/views/index.html");
+});
+
+app.get("/relay.js", (req, res) => {
+  const { bugTrackId } = req.query;
+  const injectIds = relayFileParser(bugTrackId);
+  fs.createReadStream('./public/sw.js')
+    .pipe(injectIds)
+    .pipe(res);
+});
+
 app.post("/relay_bug", (req, res) => {
   const { bugTrackId, stack} = req.body
   // relay message to correct channel.
@@ -60,18 +78,6 @@ app.post("/relay_bug", (req, res) => {
       res.end('no bugtrack user found');
     }
   });
-});
-
-app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
-});
-
-app.get("/relay.js", (req, res) => {
-  const { bugTrackId } = req.query;
-  const injectIds = relayFileParser(bugTrackId);
-  fs.createReadStream('./public/sw.js')
-    .pipe(injectIds)
-    .pipe(res);
 });
 
 app.get("/slack_auth", (req, res) => {
@@ -116,7 +122,6 @@ app.get("/slack_callback", (req, res) => {
       db.collection('users').findOne({user_id: user_id, team_id: team_id}, (err, user) => {
         if (err) throw (err);
         if (user) {
-          console.log(user)
           res.render('about', {relayScript: `<script src='https://bugtrack.glitch.me/relay.js?bugTrackId=${user._id}'></script>`});
         } else {
           db.collection('users').insertOne(newUser, (err, user) => {
