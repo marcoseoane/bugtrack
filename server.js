@@ -98,18 +98,17 @@ app.get("/slack_callback", (req, res) => {
       team_id, 
       enterprise_id, 
       team_name, 
-      bot_user_id, 
-      bot_token 
+      bot
     } = response.data;
-    
+    console.log(response.data)
     const newUser = {
       slack_token: access_token,
       user_id,
       team_id,
       enterprise_id,
       team_name,
-      bot_user_id: bot_user_id,
-      bot_token: bot_token,
+      bot_user_id: bot.bot_user_id,
+      bot_token: bot.bot_access_token,
       relay_channel: null
     };
     

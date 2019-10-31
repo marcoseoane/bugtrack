@@ -33,13 +33,13 @@ module.exports.sendMsgToChannel = ({token, channel, text}) => {
         JSON.stringify({channel, text}), 
         {
           headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json;  charset=utf-8',
             'Authorization': token
           }
         }
       )
       .then((res)=> {
-        console.log(res)
+        console.log(res.data)
         if(res.ok){
           res.json().then(json => resolve(json));
         }
