@@ -33,8 +33,11 @@
       const container = document.querySelector('#copy-script-container');
       container.appendChild(copiedTooltip);
       setTimeout(()=>{
-        copiedTooltip.
-      }, 2);
+        document.querySelector('#copied-tooltip').setAttribute('class', 'fade-out');
+        setTimeout(()=>{
+          container.removeChild(copiedTooltip);
+        }, 500)
+      }, 2000);
     }, function(err) {
       if(err) throw (err);
     });
@@ -43,6 +46,7 @@
   function createSpan(){
     const copiedTooltip = document.createElement('span');
     copiedTooltip.setAttribute('id', 'copied-tooltip');
+    copiedTooltip.setAttribute('class', 'fade-in');
     copiedTooltip.textContent = 'Copied!';
     return copiedTooltip;
   }
@@ -65,9 +69,9 @@
   #copied-tooltip:after,
   #copied-tooltip:after {
 	  position: absolute;
-    top: 75.546%;
+    top: 78.546%;
     left: 70%;
-    margin-left: -78%;
+    margin-left: -80%;
     content: '';
     width: 0;
     height: 0;
@@ -98,6 +102,40 @@
   #message-screenshot {
     max-width: 450px;
     border-radius: 5px;
+  }
+  
+  .fade-in {
+    opacity: 1;
+    animation-name: fadeInOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.3s;
+  }
+  
+  .fade-out {
+    opacity: 1;
+    animation-name: fadeOutOpacity;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in;
+    animation-duration: 0.6s;
+  }
+
+  @keyframes fadeInOpacity {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes fadeOutOpacity {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
   }
   
 </style>
