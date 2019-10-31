@@ -1,35 +1,36 @@
 <link href="https://fonts.googleapis.com/css?family=Annie+Use+Your+Telescope&display=swap" rel="stylesheet">
 <link href="/about/style.css" rel="stylesheet">
+
 <div id="header-container" style="padding-top: 60px;">
+  
   <img onclick="window.location.href = '/'" style="position: absolute; left: 0; margin: 13px 5px;" id="bugtrack-logo" src="https://cdn.glitch.com/e9de5fe1-ce70-4b91-9d39-3dfcd1c90559%2FBugs-PNG-Photos.png?v=1572208080360"/>
+  
   <div style="display: flex; align-items: center;">
     <h1 style="font-size: 60px; margin: 0px; margin-bottom: 50px">
       Integration Successful
       <span style="color: #5d8bd2;">✔</span>
     </h1>
   </div>
-<!--   <p style="font-family: 'Annie Use Your Telescope', cursive; font-size: 30px">
-    How Does It Work?
-  </p> -->
+  
   <div id="copy-script-container" style="position: relative;">
     <p style="font-weight: lighter; font-size: 13px;">
       <span class="step-number">1. </span> Copy the script tag below into the root .html file of your project.
     </p>
-<!--     <span id="copied-tooltip">Copied!</span> -->
   </div>
-  <code 
-    id="script-link" 
-    onclick="copyLink()"
-  >
+  
+  <code id="script-link" onclick="copyLink()">
     {{relayScript}}
   </code>
-<!--   <img class="instruction-arrow" src="https://cdn.glitch.com/e9de5fe1-ce70-4b91-9d39-3dfcd1c90559%2FPinClipart.com_yucky-face-clip-art_1326837.png?v=1572298344377"/> -->
+  
   <p style="font-weight: lighter; font-size: 13px;">
-    <span class="step-number">2. </span> Message <span style="background: white; padding: 4px; border-radius: 5px; color: black;">relay</span> to the bot from the channel you want to receive notifications in.
+    <span class="step-number">2. </span> 
+    Message <span style="background: white; padding: 4px; border-radius: 5px; color: black;">relay</span> to the bot from the channel you want to receive notifications in.
   </p>
+  
   <img id="message-screenshot" src="https://cdn.glitch.com/e9de5fe1-ce70-4b91-9d39-3dfcd1c90559%2FScreenshot%202019-10-31%20at%2010.38.31.png?v=1572518325128" />
   <img style="margin-top: 15px;" id="message-screenshot" src="https://cdn.glitch.com/e9de5fe1-ce70-4b91-9d39-3dfcd1c90559%2FScreenshot%202019-10-31%20at%2017.00.40.png?v=1572541250533"/>
-    <p style="font-family: 'Annie Use Your Telescope', cursive; font-size: 25px;">
+  
+  <p style="font-family: 'Annie Use Your Telescope', cursive; font-size: 25px;">
     DONE 
     <span style="
       position: absolute;
@@ -37,32 +38,7 @@
       margin: 0px 20px;
     ">:)</span>
   </p>
+
 </div>
-<script>
-  
-  function copyLink(){
-    const codeTag = document.querySelector('#script-link');
-    navigator.clipboard.writeText(codeTag.innerText).then(function() {
-      const copiedTooltip = createSpan();
-      const container = document.querySelector('#copy-script-container');
-      container.appendChild(copiedTooltip);
-      setTimeout(()=>{
-        document.querySelector('#copied-tooltip').setAttribute('class', 'fade-out');
-        setTimeout(()=>{
-          container.removeChild(copiedTooltip);
-        }, 510)
-      }, 2000);
-    }, function(err) {
-      if(err) throw (err);
-    });
-  }
-  
-  function createSpan(){
-    const copiedTooltip = document.createElement('span');
-    copiedTooltip.setAttribute('id', 'copied-tooltip');
-    copiedTooltip.setAttribute('class', 'fade-in');
-    copiedTooltip.textContent = 'Copied!';
-    return copiedTooltip;
-  }
-  
-</script>
+
+<script src="/about/about.js" defer></script>

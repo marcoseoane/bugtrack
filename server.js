@@ -48,8 +48,8 @@ slackEvents.on('message', (event) => {
   }
 });
 
-app.get("/", (request, response) => {
-  response.sendFile(__dirname + "/views/index.html");
+app.get("/", (req, res) => {
+  res.render('index');
 });
 
 app.get("/relay.js", (req, res) => {
