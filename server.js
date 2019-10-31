@@ -101,28 +101,30 @@ app.get("/slack_callback", (req, res) => {
       bot,
     } = response.data;
 
-    const newUser = {
-      slack_token: access_token,
-      user_id,
-      team_id,
-      enterprise_id,
-      team_name,
-      bot_user_id: bot ? bot.bot_user_id : response.data.bot_user_id,
-      bot_token: bot ? bot.bot_access_token : response.bot_access_token,
-      relay_channel: null
-    };
-    
-    db.collection('users').findOne({user_id: user_id}, (err, user) => {
-      if (err) throw (err);
-      if (user) {
-        console.log(user)
-        res.render('about', {relayScript: `<script src='https://bugtrack.glitch.me/relay.js?bugTrackId=${user._id}'></script>`});
-      } else {
-        db.collection('users').insertOne(newUser, (err, user) => {
-          res.render('about', {relayScript: `<script src='https://bugtrack.glitch.me/relay.js?bugTrackId=${user.ops[0]._id}'></script>`});
-        });
+    if(response.data.ok){
+      const newUser = {
+        slack_token: access_token,
+        user_id,
+        team_id,
+        enterprise_id,
+        team_name,
+        bot_user_id: bot ? bot.bot_user_id : response.data.bot_user_id,
+        bot_token: bot ? bot.bot_access_token : response.bot_access_token,
+        relay_channel: null
       };
-    });
+
+      db.collection('users').findOne({user_id: user_id, team_id: team_id}, (err, user) => {
+        if (err) throw (err);
+        if (user) {
+          console.log(user)
+          res.render('about', {relayScript: `<script src='https://bugtrack.glitch.me/relay.js?bugTrackId=${user._id}'></script>`});
+        } else {
+          db.collection('users').insertOne(newUser, (err, user) => {
+            res.render('about', {relayScript: `<script src='https://bugtrack.glitch.me/relay.js?bugTrackId=${user.ops[0]._id}'></script>`});
+          });
+        };
+      });
+    } else res.end('ERROR');
   })
   .catch((error) => {
     console.log(error);
