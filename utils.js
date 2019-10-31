@@ -25,19 +25,25 @@ module.exports.relayFileParser = (bugTrackId) => {
   return t
 };
 module.exports.sendMsgToChannel = ({token, channel, text}) => {
-  fetch('https://slack.com/api/chat.postMessage', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': token
-    },
-    body: JSON.stringify({
-      channel, text
-    })
-  }).then((res)=> {
-    if(res.ok){
-      console.log('workdd')
-      //do something
+  return new Promise((resolve, reject) => {
+    try{
+      fetch('https://slack.com/api/chat.postMessage', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': token
+        },
+        body: JSON.stringify({
+          channel, text
+        })
+      }).then((res)=> {
+        if(res.ok){
+          console.log('workdd')
+          //do something
+        }
+      })
+    } catch (err){
+      reject('There was an error rely')
     }
-  })
+  });
 }
