@@ -15,10 +15,10 @@ module.exports.setRelayChannel = (event, db) => {
           });
       });
 };
-module.exports.relayFileParser = (botId, channelId) => {
+module.exports.relayFileParser = (bugTrackId) => {
   const t = new Transform();
   t._transform = function(data, encoding, done) {
-    const str = data.toString().replace("bugBotId: ''", "bugBotId: '" + botId + "'").replace("channelId: ''", "channelId: '" + channelId + "'");
+    const str = data.toString().replace("bugTrackId: ''", "bugTrackId: '" + bugTrackId+ "'")
     this.push(str);
     done();
   };

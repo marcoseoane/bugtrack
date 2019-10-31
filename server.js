@@ -43,9 +43,10 @@ slackEvents.on('message', (event) => {
 });
 
 app.post("/relay_bug", (req, res) => {
-  console.log(req.body);
+  const { bugTrackId, stack} = req.body
+  console.log(req.body)
   // relay message to correct channel.
-  db.collection('users').findOne({user_id: req.query.bugTrackId}, (err, user)=>{
+  db.collection('users').findOne({ _id: bugTrackId }, (err, user)=>{
     if(user){
       console.log(user)
       res.end('');
@@ -60,8 +61,8 @@ app.get("/", (request, response) => {
 });
 
 app.get("/relay.js", (req, res) => {
-  const { botId, channelId } = req.query;
-  const injectIds = relayFileParser(botId, channelId);
+  const { bugTrackId } = req.query;
+  const injectIds = relayFileParser(bugTrackId);
   fs.createReadStream('./public/sw.js')
     .pipe(injectIds)
     .pipe(res);
