@@ -4,6 +4,7 @@ const qs = require('qs');
 
 module.exports.userMentionedBot = (msgText, botId) => msgText.includes(botId);
 module.exports.userRegEx = /<@.*> /;
+
 module.exports.setRelayChannel = (event, db) => {
   const msgContent = event.text.replace(this.userRegEx, '').toLowerCase();
     if (msgContent.includes('relay'))
@@ -16,6 +17,7 @@ module.exports.setRelayChannel = (event, db) => {
           });
       });
 };
+
 module.exports.relayFileParser = (bugTrackId) => {
   const t = new Transform();
   t._transform = function(data, encoding, done) {
@@ -25,6 +27,7 @@ module.exports.relayFileParser = (bugTrackId) => {
   };
   return t
 };
+
 module.exports.sendMsgToChannel = ({token, channel, text}) => {
   console.log(token, channel, text)
   return new Promise((resolve, reject) => {

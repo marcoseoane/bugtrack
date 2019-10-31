@@ -50,12 +50,12 @@ app.post("/relay_bug", (req, res) => {
       sendMsgToChannel({token: user.slack_token, channel: user.relay_channel, text: '`'+ stack.replace('\n', '') + '`'})
         .then(slackResponse => {
           if(slackResponse.ok){
-                  res.end('relay successful');
-          }
+            res.end('relay successful');
+          } else res.end('relay unsuccessful');
         })
         .catch(err => {
-          console.log(err);
-        })
+          res.end('relay unsuccessful');
+        });
     } else {
       res.end('no bugtrack user found');
     }
@@ -100,7 +100,7 @@ app.get("/slack_callback", (req, res) => {
       team_name, 
       bot
     } = response.data;
-    console.log(response.data)
+
     const newUser = {
       slack_token: access_token,
       user_id,
@@ -116,10 +116,11 @@ app.get("/slack_callback", (req, res) => {
       if (err) throw (err);
       if (user) {
         console.log(user)
-        res.render('about', {relayScript: `<script src='https://bugtrack.glitch.me/relay.js?bugTrackId=${user._id}'></script>`})
+        res.render('about', {relayScript: `<script src='https://bugtrack.glitch.me/relay.js?bugTrackId=${user._id}'></script>`});
       } else {
-        db.collection('users').insertOne(newUser);
-        res.end('integration successful, thank you for installing');
+        db.collection('users').insertOne(newUser, (err, user) => {
+          res.render('about', {relayScript: `<script src='https://bugtrack.glitch.me/relay.js?bugTrackId=${user.ops[0]._id}'></script>`});
+        });
       };
     });
   })
