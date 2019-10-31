@@ -1,4 +1,5 @@
 const Transform = require('stream').Transform;
+const axios = require('axios');
 
 module.exports.userMentionedBot = (msgText, botId) => msgText.includes(botId);
 module.exports.userRegEx = /<@.*> /;
@@ -25,25 +26,27 @@ module.exports.relayFileParser = (bugTrackId) => {
   return t
 };
 module.exports.sendMsgToChannel = ({token, channel, text}) => {
+  console.log(token, channel, text)
   return new Promise((resolve, reject) => {
     try{
-      fetch('https://slack.com/api/chat.postMessage', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': token
-        },
-        body: JSON.stringify({
-          channel, text
-        })
-      }).then((res)=> {
+      axios.post('https://slack.com/api/chat.postMessage',
+        JSON.stringify({channel, text}), 
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+          }
+        }
+      )
+      .then((res)=> {
+        console.log(res)
         if(res.ok){
-          console.log('workdd')
-          //do something
+          res.json().then(json => resolve(json));
         }
       })
     } catch (err){
-      reject('There was an error rely')
+      console.log(err)
+      reject('There was an error relaying bug notification to Slack')
     }
   });
 }

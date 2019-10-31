@@ -14,7 +14,7 @@ const { MongoClient, ObjectId } = require('mongodb')
 const uri = process.env.MONGO_URI
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
 
-const { userMentionedBot, userRegEx, setRelayChannel, relayFileParser, sendMessageToChannel } = require('./utils.js');
+const { userMentionedBot, userRegEx, setRelayChannel, relayFileParser, sendMsgToChannel } = require('./utils.js');
 
 var db;
 
@@ -45,9 +45,16 @@ slackEvents.on('message', (event) => {
 app.post("/relay_bug", (req, res) => {
   const { bugTrackId, stack} = req.body
   // relay message to correct channel.
-  db.collection('users').findOne({ _id: ObjectId(bugTrackId) }, (err, user)=>{
+  db.collection('users').findOne({ _id: ObjectId(bugTrackId) }, async (err, user)=>{
     if(user){
-      sendMessageToChannel(user.slack_token, user.relay_channel, 'test');
+      sendMsgToChannel({token: user.slack_token, channel: user.relay_channel, text: 'test'})
+        .then(slackResponse => {
+          console.log(slackResponse);
+        })
+        .catch(err => {
+          console.log(err);
+        })
+      
       res.end('relay successful');
     } else {
       res.end('no bugtrack user found');
