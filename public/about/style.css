@@ -51,6 +51,22 @@
   max-width: 450px;
   border-radius: 5px;
 }
+
+h1 {
+  font-size: 40px;
+}
+
+@media(max-width: 497px){
+  h1 {
+    font-size: 20px;
+    text-align: center;
+  }
+  #bugtrack-logo {
+    height: 20px;
+    width: 20px;
+    margin: 5px5px;
+  }
+}
   
 .fade-in {
   opacity: 1;

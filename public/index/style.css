@@ -16,6 +16,11 @@ p {
   max-width: 600px;
 }
 
+#index-p {
+  text-align: center;
+  padding: 5px;
+}
+
 #bugtrack-logo {
   width: 45px;
   height: 45px;
